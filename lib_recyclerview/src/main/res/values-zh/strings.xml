@@ -1,0 +1,10 @@
+<resources>
+    <string name="lib_recyclerview_header_hint_normal">下拉刷新</string>
+    <string name="lib_recyclerview_hint_release">释放立即刷新</string>
+    <string name="lib_recyclerview_loading">正在加载...</string>
+    <string name="lib_recyclerview_nomore_loading">没有了</string>
+    <string name="lib_recyclerview_refreshing">正在刷新...</string>
+    <string name="lib_recyclerview_refresh_done">刷新完成</string>
+    <string name="lib_recyclerview_loading_done">加载完成</string>
+    <string name="lib_recyclerview_header_last_time">上次更新时间：</string>
+</resources>

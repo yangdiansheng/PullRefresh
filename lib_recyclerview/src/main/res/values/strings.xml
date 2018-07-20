@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">lib_recyclerview</string>
+    <string name="lib_recyclerview_header_hint_normal">pull to refresh</string>
+    <string name="lib_recyclerview_hint_release">release to start refresh</string>
+    <string name="lib_recyclerview_loading">loading...</string>
+    <string name="lib_recyclerview_nomore_loading">no more to be loaded</string>
+    <string name="lib_recyclerview_refreshing">refreshing...</string>
+    <string name="lib_recyclerview_refresh_done">refresh done</string>
+    <string name="lib_recyclerview_loading_done">loading done</string>
+    <string name="lib_recyclerview_header_last_time">last update：</string>
+</resources>
