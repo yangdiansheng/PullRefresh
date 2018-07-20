@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 
@@ -31,17 +32,21 @@ public class PullRefreshFrameLayout extends FrameLayout {
     }
 
     private static final float MAX_HEAD_REFRESH_HIGH = 10000;
+    private static final float REFRESH_HIGH = 400;
 
     private float mTouchY;
     private float mTouchX;
     private View mChildView;
     private DecelerateInterpolator mDecelerateInterpolator;
+    private PullRefreshHead mPullRefreshHead;
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         mChildView = getChildAt(0);
         mDecelerateInterpolator = new DecelerateInterpolator(.5f);
+        mPullRefreshHead = new HeadTimeView(getContext());
+        addView(mPullRefreshHead.getView());
     }
 
     @Override
@@ -77,6 +82,8 @@ public class PullRefreshFrameLayout extends FrameLayout {
 
     }
 
+    private float dy;
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
@@ -85,13 +92,14 @@ public class PullRefreshFrameLayout extends FrameLayout {
                 mTouchX = event.getX();
                 break;
             case MotionEvent.ACTION_MOVE:
-                float dy = event.getY() - mTouchY;
+                dy = event.getY() - mTouchY;
                 float dx = event.getX() - mTouchX;
                 if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) < MAX_HEAD_REFRESH_HIGH){
                     if (mChildView != null) {
                         float offset = mDecelerateInterpolator.getInterpolation(Math.abs(dy) / MAX_HEAD_REFRESH_HIGH) * MAX_HEAD_REFRESH_HIGH / 2;
                         if (dy > 0){
                             mChildView.setTranslationY(offset);
+                            mPullRefreshHead.onPull(dy / REFRESH_HIGH);
                         } else {
                             mChildView.setTranslationY(- offset);
                         }
@@ -102,6 +110,9 @@ public class PullRefreshFrameLayout extends FrameLayout {
             case MotionEvent.ACTION_CANCEL:
                 if (mChildView != null) {
                     mChildView.setTranslationY(0);
+                    if (dy > REFRESH_HIGH){
+                        mPullRefreshHead.onRefresh();
+                    }
                 }
                 break;
         }
