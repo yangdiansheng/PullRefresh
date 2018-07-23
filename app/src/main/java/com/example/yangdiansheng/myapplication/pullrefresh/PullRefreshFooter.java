@@ -18,4 +18,6 @@ public interface PullRefreshFooter {
     void onPullUp(float setOffRate);
 
     View getView();
+
+    boolean isLoading();
 }

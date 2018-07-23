@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.example.yangdiansheng.myapplication.pullrefresh.PullRefreshFrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +29,10 @@ public class RecycleViewActivity extends AppCompatActivity {
         activity.startActivity(intent);
     }
 
-
     @BindView(R.id.rlv_list)
     RecyclerView recyclerView;
+    @BindView(R.id.prfl_framelayout)
+    PullRefreshFrameLayout framelayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,27 @@ public class RecycleViewActivity extends AppCompatActivity {
             list.add("1" + i);
         }
         recyclerView.setAdapter(new Adapter(list,this));
+        framelayout.setCallBack(new PullRefreshFrameLayout.CallBack() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        framelayout.refreshComplete();
+                    }
+                },2000);
+            }
+
+            @Override
+            public void onLoadMore() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        framelayout.loadMoreComplete();
+                    }
+                },2000);
+            }
+        });
     }
 
     private class Adapter extends RecyclerView.Adapter<MyHolder>{

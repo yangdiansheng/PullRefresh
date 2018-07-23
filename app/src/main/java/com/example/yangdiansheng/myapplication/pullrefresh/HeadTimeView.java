@@ -41,12 +41,12 @@ public class HeadTimeView extends LinearLayout implements PullRefreshHead {
 
     private long mTimeMillis = 0;
     private float mHeight;
+    private boolean mIsRefreshing = false;
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
         mHeight = getHeight();
-        Log.i("yyy", " HeadTimeView mHeight=" + mHeight);
     }
 
     private void init() {
@@ -65,6 +65,19 @@ public class HeadTimeView extends LinearLayout implements PullRefreshHead {
         mLlHeaderRefreshTimeContainer.setVisibility(mTimeMillis == 0 ? GONE : VISIBLE);
     }
 
+    private void initRefreshing(){
+        mTvRefreshStatus.setText(getResources().getString(R.string.refreshing));
+        mTvRefreshTime.setText(Utils.getTime(mTimeMillis));
+        //隐藏刷新箭头，显示加载loading
+        mIsRefreshing = true;
+
+    }
+
+    public void initRefreshed(){
+        mTimeMillis = System.currentTimeMillis();
+        mTvRefreshStatus.setText(getResources().getString(R.string.refresh_done));
+    }
+
     private void releaseRefresh() {
         mTvRefreshStatus.setText(getResources().getString(R.string.listview_header_hint_release));
         mTvRefreshTime.setText(Utils.getTime(mTimeMillis));
@@ -78,23 +91,35 @@ public class HeadTimeView extends LinearLayout implements PullRefreshHead {
 
     @Override
     public void onRefresh() {
-        mTimeMillis = System.currentTimeMillis();
+        initRefreshing();
         Log.i("yyy", "onRefresh");
     }
 
     @Override
-    public void onComplete() {
-        Log.i("yyy", "onComplete");
-    }
-
-    @Override
     public void onPullDown(float setOffRate) {
-        Log.i("yyy", " onPull setOffRate=" + setOffRate);
+//        Log.i("yyy", " onPull setOffRate=" + setOffRate);
         if (setOffRate < 1f) {
             initRefresh();
         } else {
             releaseRefresh();
         }
+    }
+
+    @Override
+    public void onComplete() {
+        postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mIsRefreshing = false;
+            }
+        },500);
+        initRefreshed();
+        Log.i("yyy", "onComplete");
+    }
+
+    @Override
+    public boolean isRefreshing() {
+        return mIsRefreshing;
     }
 
     @Override

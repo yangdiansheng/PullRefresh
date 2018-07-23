@@ -12,10 +12,12 @@ public interface PullRefreshHead {
     void onStart();
     //开始刷新
     void onRefresh();
-    //刷新完成
-    void onComplete();
     //持续下拉 setOffRate下拉的比率 0为未动，1为应该刷新了
     void onPullDown(float setOffRate);
+
+    void onComplete();
+
+    boolean isRefreshing();
 
     View getView();
 }

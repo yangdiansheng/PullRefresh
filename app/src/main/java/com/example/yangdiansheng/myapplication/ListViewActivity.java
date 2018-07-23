@@ -5,6 +5,7 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,8 @@ import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.example.yangdiansheng.myapplication.pullrefresh.PullRefreshFrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +33,8 @@ public class ListViewActivity extends AppCompatActivity {
         activity.startActivity(intent);
     }
 
-
+    @BindView(R.id.prfl_framelayout)
+    PullRefreshFrameLayout framelayout;
     @BindView(R.id.lv_list)
     ListView mLvList;
 
@@ -44,6 +48,27 @@ public class ListViewActivity extends AppCompatActivity {
             list.add("1" + i);
         }
         mLvList.setAdapter(new Adapter(list,this));
+        framelayout.setCallBack(new PullRefreshFrameLayout.CallBack() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        framelayout.refreshComplete();
+                    }
+                },2000);
+            }
+
+            @Override
+            public void onLoadMore() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        framelayout.loadMoreComplete();
+                    }
+                },2000);
+            }
+        });
     }
 
     private class Adapter extends BaseAdapter {
@@ -75,6 +100,8 @@ public class ListViewActivity extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.list_item,parent,false);
+            TextView textView = (TextView) view.findViewById(R.id.tv_item);
+            textView.setText(mlist.get(position));
             return view;
         }
     }
