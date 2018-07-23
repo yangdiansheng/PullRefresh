@@ -28,6 +28,12 @@
                 android:layout_height="50dp"
                 android:text="listview"/>
 
+            <Button
+                android:id="@+id/bt_test"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="test"/>
+
         </LinearLayout>
 
 

@@ -1,6 +1,7 @@
 package com.example.yangdiansheng.myapplication;
 
 import android.content.Context;
+import android.support.annotation.ColorInt;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,6 +31,10 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.bt_listview)
     void listview(){
         ListViewActivity.show(this);
+    }
+    @OnClick(R.id.bt_test)
+    void test(){
+        TestActivity.show(this);
     }
 
     @Override

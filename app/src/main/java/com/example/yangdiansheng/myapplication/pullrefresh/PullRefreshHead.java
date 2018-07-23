@@ -14,10 +14,8 @@ public interface PullRefreshHead {
     void onRefresh();
     //刷新完成
     void onComplete();
-    //持续下拉
-    void onPull(float dy);
-    //是否可以刷新
-    boolean canRefresh();
+    //持续下拉 setOffRate下拉的比率 0为未动，1为应该刷新了
+    void onPullDown(float setOffRate);
 
     View getView();
 }
